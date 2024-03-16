@@ -5,7 +5,7 @@ import Error from "./Error"
 
 const Form = () => {
 
-    const { handleChangeDatos, datos, setError, error} = useCotizador()
+    const { handleChangeDatos, datos, setError, error, contizarSeguros} = useCotizador()
 
     const hadleSubmit = e => {
         e.preventDefault()
@@ -15,6 +15,7 @@ const Form = () => {
             return
         }
         setError('')
+        contizarSeguros()
     }
 
   return (

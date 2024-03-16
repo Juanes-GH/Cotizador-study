@@ -1,4 +1,6 @@
 import { createContext, useState } from "react";
+import { obtainYearDifference, calculateBrand, calculatePlan, formatCurrency } from "../helpers/index"
+
 
 const CotizadorContext = createContext();
 
@@ -11,6 +13,7 @@ const CotizadorProvider = ({children}) => {
     })
 
     const [error, setError] = useState('')
+    const [result, setResult] = useState(0)
 
     const handleChangeDatos = e => {
         setDatos({
@@ -19,13 +22,40 @@ const CotizadorProvider = ({children}) => {
         })
     }
 
+    const contizarSeguros = () => {
+        // Una base
+        let result = 2000;
+        // Obtener diferencia de años
+        const difference = obtainYearDifference(datos.year)
+        
+        // Hay que restar el 3% por cada año
+        result -= ((difference * 3) * result) / 100
+        
+        // Americano 15%
+        // Europeo 30%
+        // Asiatico 5%
+        
+        result *= calculateBrand(datos.marca)
+        // Básico 20%
+        // Completo 50%
+
+        result *= calculatePlan(datos.plan)
+        
+        // Formatear dinero 
+        // result = result.toFixed(2)
+        result = formatCurrency(result)
+        
+        setResult(result)
+    }
+
     return(
         <CotizadorContext.Provider 
             value={{
                 datos,
                 handleChangeDatos,
                 error,
-                setError
+                setError,
+                contizarSeguros
             }}
         >
             {children}
