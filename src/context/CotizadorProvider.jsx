@@ -14,6 +14,7 @@ const CotizadorProvider = ({children}) => {
 
     const [error, setError] = useState('')
     const [result, setResult] = useState(0)
+    const [loading, setLoading] = useState(false)
 
     const handleChangeDatos = e => {
         setDatos({
@@ -45,7 +46,11 @@ const CotizadorProvider = ({children}) => {
         // result = result.toFixed(2)
         result = formatCurrency(result)
         
-        setResult(result)
+        setLoading(true)
+        setTimeout(() => {
+            setResult(result)
+            setLoading(false)
+        },3000)
     }
 
     return(
@@ -55,7 +60,9 @@ const CotizadorProvider = ({children}) => {
                 handleChangeDatos,
                 error,
                 setError,
-                contizarSeguros
+                contizarSeguros,
+                result,
+                loading
             }}
         >
             {children}
